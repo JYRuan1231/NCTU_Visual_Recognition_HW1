@@ -2,7 +2,6 @@
 # coding: utf-8
 
 import torchvision
-from model import train_test_model
 from torchvision import transforms, utils, models, datasets
 from torch.utils.data import Dataset, DataLoader, random_split
 from PIL import Image
@@ -11,6 +10,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 from torch.optim import lr_scheduler
+
 import argparse
 from random import sample
 import matplotlib.pyplot as plt
@@ -84,10 +84,10 @@ def ensemble_learning(candidate=None):
     for i in range(len(candidate)):
         model_name = candidate[i]
         model_path = "./models/" + model_name
-        print(model_path + " is loading")
         for x in model_list:
-            if model_name.find(x) >= 0:
+            if model_name.find(x) == 0:
                 model_name = x
+
         if model_name in [
             "resnet50",
             "densenet201",
@@ -107,21 +107,15 @@ def ensemble_learning(candidate=None):
                 ),
             }
             if model_name == "resnet50":
-                model_ft = models.resnet50(pretrained=False)
-                num_ftrs = model_ft.fc.in_features
-                model_ft.fc = nn.Linear(num_ftrs, 196)
-            if model_name == "resnext50_32x4d":
-                model_ft = models.resnext50_32x4d(pretrained=False)
-                num_ftrs = model_ft.fc.in_features
-                model_ft.fc = nn.Linear(num_ftrs, 196)
-            if model_name == "resnext101_32x8d":
-                model_ft = models.resnext101_32x8d(pretrained=False)
-                num_ftrs = model_ft.fc.in_features
-                model_ft.fc = nn.Linear(num_ftrs, 196)
+                model_ft = models.resnet50(pretrained=True)
             if model_name == "densenet201":
-                model_ft = timm.create_model(
-                    model_name, pretrained=False, num_classes=196
-                )
+                model_ft = models.densenet201(pretrained=True)
+            if model_name == "resnext50_32x4d":
+                model_ft = models.resnext50_32x4d(pretrained=True)
+            if model_name == "resnext101_32x8d":
+                model_ft = models.resnext101_32x8d(pretrained=True)
+            num_ftrs = model_ft.fc.in_features
+            model_ft.fc = nn.Linear(num_ftrs, 196)
         elif model_name in ["inception_resnet_v2"]:
             data_transforms = {
                 "test": transforms.Compose(
@@ -134,7 +128,7 @@ def ensemble_learning(candidate=None):
                 ),
             }
             model_ft = timm.create_model(
-                model_name, pretrained=False, num_classes=196
+                model_name, pretrained=True, num_classes=196
             )
         elif model_name in ["efficientnet_b4"]:
             data_transforms = {
@@ -150,7 +144,7 @@ def ensemble_learning(candidate=None):
                 ),
             }
             model_ft = timm.create_model(
-                "tf_efficientnet_b4_ns", pretrained=False, num_classes=196
+                "tf_efficientnet_b4_ns", pretrained=True, num_classes=196
             )
 
         model_ft.load_state_dict(torch.load(model_path))
