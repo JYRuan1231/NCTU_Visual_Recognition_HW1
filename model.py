@@ -8,7 +8,6 @@ from torch.optim import lr_scheduler
 from torchvision import transforms, utils, models
 from torch.utils.data import Dataset, DataLoader, random_split
 import matplotlib.pyplot as plt
-from cnn_finetune import make_model
 import timm
 from PIL import Image
 import csv
@@ -75,7 +74,7 @@ def train_model(
     best_acc = 0.0
 
     for epoch in range(num_epochs):
-        device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
         print("Epoch {}/{}".format(epoch, num_epochs - 1))
         print("-" * 10)
         since = time.time()
@@ -294,7 +293,7 @@ def train_test_model(model_name, lr, num_epochs, extra_name):
     )
 
     # Start training model
-    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model_ft = model_ft.to(device)
     criterion = nn.CrossEntropyLoss()
 
@@ -329,7 +328,7 @@ def train_test_model(model_name, lr, num_epochs, extra_name):
     torch.save(model_ft.state_dict(), model_path)
 
     # Predict the testing data then export result to a csv file
-    csv_name = model_name + extra_name + ".csv"
+    csv_name = "./result/" + model_name + extra_name + ".csv"
 
     print("Start to predict result!")
 

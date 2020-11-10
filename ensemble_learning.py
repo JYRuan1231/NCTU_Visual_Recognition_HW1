@@ -19,7 +19,6 @@ import numpy as np
 import time
 import os
 import copy
-from cnn_finetune import make_model
 import timm
 
 data_transforms = {
@@ -76,7 +75,7 @@ if __name__ == "__main__":
 
     test_path = "./data/testing_data/testing_data/"
     allFileList = os.listdir(test_path)
-    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
     # Final predict
     predicts = []
@@ -180,7 +179,7 @@ if __name__ == "__main__":
         label_conversion = {v: k for k, v in label_number.items()}
 
     # make final csv file
-    csv_name = "voting" + ".csv"
+    csv_name = "./result/" + "voting" + ".csv"
     with open(csv_name, "w", newline="") as csvFile:
         field = ["id", "label"]
         writer = csv.DictWriter(csvFile, field)

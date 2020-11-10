@@ -31,7 +31,7 @@ def process_command():
         "-e_n",
         type=str,
         default="DL_model",
-        help="Extra model's name avoid to replace the same name of model",
+        help="Extra model's name avoid to replace other same name of model",
     )
 
     return parser.parse_args()
