@@ -52,7 +52,7 @@ train_test_model("resnet50", 0.01, 1, "_1")
 train_test_model("resnet50", 0.01, 1, "_2")
 ```
 When the program was finished, we will get a model file `/models/` and a csv file `/result/`.
-So we have two models and two csv files.
+In total, now we have two models and two csv files.
 
 ```
 ./models/resnet50_1_model  
