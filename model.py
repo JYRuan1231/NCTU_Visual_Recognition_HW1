@@ -179,15 +179,20 @@ def build_model(model_name):
         }
         if model_name == "resnet50":
             model_ft = models.resnet50(pretrained=True)
+            num_ftrs = model_ft.fc.in_features
+            model_ft.fc = nn.Linear(num_ftrs, 196)
         if model_name == "densenet201":
-            model_ft = models.densenet201(pretrained=True)
+            model_ft = timm.create_model(
+                model_name, pretrained=True, num_classes=196
+            )
         if model_name == "resnext50_32x4d":
             model_ft = models.resnext50_32x4d(pretrained=True)
+            num_ftrs = model_ft.fc.in_features
+            model_ft.fc = nn.Linear(num_ftrs, 196)
         if model_name == "resnext101_32x8d":
             model_ft = models.resnext101_32x8d(pretrained=True)
-        num_ftrs = model_ft.fc.in_features
-        model_ft.fc = nn.Linear(num_ftrs, 196)
-
+            num_ftrs = model_ft.fc.in_features
+            model_ft.fc = nn.Linear(num_ftrs, 196)
     elif model_name in ["inception_resnet_v2"]:
         data_transforms = {
             "train": transforms.Compose(

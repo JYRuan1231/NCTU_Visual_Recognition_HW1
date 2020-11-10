@@ -73,7 +73,7 @@ def ensemble_learning(candidate=None):
     allFileList = os.listdir(test_path)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
-    if candidate == None:
+    if candidate is None:
         print("No input model")
         return
 
@@ -110,6 +110,10 @@ def ensemble_learning(candidate=None):
                 model_ft = models.resnet50(pretrained=False)
                 num_ftrs = model_ft.fc.in_features
                 model_ft.fc = nn.Linear(num_ftrs, 196)
+            if model_name == "densenet201":
+                model_ft = timm.create_model(
+                    model_name, pretrained=False, num_classes=196
+                )
             if model_name == "resnext50_32x4d":
                 model_ft = models.resnext50_32x4d(pretrained=False)
                 num_ftrs = model_ft.fc.in_features
@@ -118,10 +122,6 @@ def ensemble_learning(candidate=None):
                 model_ft = models.resnext101_32x8d(pretrained=False)
                 num_ftrs = model_ft.fc.in_features
                 model_ft.fc = nn.Linear(num_ftrs, 196)
-            if model_name == "densenet201":
-                model_ft = timm.create_model(
-                    model_name, pretrained=False, num_classes=196
-                )
         elif model_name in ["inception_resnet_v2"]:
             data_transforms = {
                 "test": transforms.Compose(
@@ -129,7 +129,9 @@ def ensemble_learning(candidate=None):
                         transforms.Resize(312),
                         transforms.CenterCrop(299),
                         transforms.ToTensor(),
-                        transforms.Normalize([0.5, 0.5, 0.5], [0.5, 0.5, 0.5]),
+                        transforms.Normalize(
+                            [0.5, 0.5, 0.5], [0.5, 0.5, 0.5]
+                        ),
                     ]
                 ),
             }

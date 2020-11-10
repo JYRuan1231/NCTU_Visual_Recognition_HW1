@@ -51,5 +51,6 @@ if __name__ == "__main__":
         train_test_model(args.model, args.lr, args.epochs, args.e_name)
     else:
         print(
-            "Input error, wrong model name or multiple models(Only one model can trained)"
+            "Input error, wrong model name or multiple models"
+            "(Only one model can trained)"
         )
