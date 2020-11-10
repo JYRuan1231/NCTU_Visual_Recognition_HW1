@@ -4,10 +4,10 @@
 The project provides an accurate classification model of the car brands for the contest on [Kaggle](https://www.kaggle.com/c/cs-t0828-2020-hw1/).
 
 ## Usage
-We training and testing with Python 3.6, pytorch 1.4. Need [timm](https://github.com/rwightman/pytorch-image-models), [AutoAugment](https://github.com/DeepVoltaire/AutoAugment).
+We training and testing with Python 3.6, pytorch 1.4. Need to use and reference [timm](https://github.com/rwightman/pytorch-image-models), [AutoAugment](https://github.com/DeepVoltaire/AutoAugment).
 
 ### Traning and Testing model
-we choose a model to train.
+First choose one of the following models:
 * resnet50
 * densenet201
 * inception_resnet_v2
@@ -21,15 +21,27 @@ We supply two ways to use our program(training and testing)
 Example:
 
 ```
-python ensemble.py -m resnet50 --lr 0.01 -epochs 50 -e_n _v1
-python ensemble.py -m resnet50 --lr 0.01 -epochs 50 -e_n _v2
+python main.py -m resnet50 --lr 0.01 -epochs 50 -e_n _v1
+python main.py -m resnet50 --lr 0.01 -epochs 50 -e_n _v2
 
-
+Required arguments:
 --model -m                Choose model:resnet50, densenet201, inception_resnet_v2, resnext50_32x4d, resnext101_32x8d, efficientnet_b4
---lr -l                   Base learning rate
---epochs -e			   Number of epochs
+
+Not Required arguments:
+--lr -l                   Base learning rate                            
+--epochs -e			   Number of epochs                                    
 ----e_name -e_n		   Extra model's name avoid to replace other same name of model
+
 ```
+
+Default:
+
+| Argument    | Default value |
+| ------------|:-------------:|
+| lr          | 0.001         |
+| epochs      | 50            |
+| e_name      | DL_model      |
+
 
 OR
 
@@ -58,6 +70,8 @@ Example:
 ```
 python ensemble.py -m resnet50_1_model -m resnet50_2_model 
 
+
+Required arguments:
 --model -m 				Choose model:resnet50, densenet201, inception_resnet_v2, resnext50_32x4d, resnext101_32x8d, efficientnet_b4
 ```
 
