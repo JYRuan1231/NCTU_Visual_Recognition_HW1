@@ -1,10 +1,10 @@
 # Visual_Recognition_HW1
 
 ## Introduction
-The project provides an accurate classification model of the car brands for the contest on [Kaggle](https://www.kaggle.com/c/cs-t0828-2020-hw1/).
+The project is training an accurate car brands classification using deep learning for [Kaggle](https://www.kaggle.com/c/cs-t0828-2020-hw1/) competition.
 
 ## Usage
-We training and testing with Python 3.6, pytorch 1.4. Need to use and reference [timm](https://github.com/rwightman/pytorch-image-models), [AutoAugment](https://github.com/DeepVoltaire/AutoAugment).
+We training and testing with Python 3.6, pytorch 1.4 and **Need** to reference [timm](https://github.com/rwightman/pytorch-image-models), [AutoAugment](https://github.com/DeepVoltaire/AutoAugment).
 
 ### Traning and Testing model
 First choose one of the following models:
