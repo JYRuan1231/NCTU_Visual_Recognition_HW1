@@ -244,9 +244,7 @@ def build_model(model_name):
     return model_ft, data_transforms
 
 
-def train_test_model(
-    model_name="resnet50", lr=0.01, num_epochs=50, extra_name="_v"
-):
+def train_test_model(model_name, lr, num_epochs, extra_name):
     # Class Conversion table
     with open("./data/training_labels.csv", newline="") as csvfile:
         rows = csv.DictReader(csvfile)
