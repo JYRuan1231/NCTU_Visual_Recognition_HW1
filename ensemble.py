@@ -21,25 +21,6 @@ import os
 import copy
 import timm
 
-data_transforms = {
-    "test": transforms.Compose(
-        [
-            transforms.Resize(256),
-            transforms.CenterCrop(224),
-            transforms.ToTensor(),
-            transforms.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
-        ]
-    ),
-}
-model_list = [
-    "resnet50",
-    "densenet201",
-    "resnext50_32x4d",
-    "resnext101_32x8d",
-    "inception_resnet_v2",
-    "efficientnet_b4",
-]
-
 
 def most_frequent(List):
     counter = 0
@@ -67,20 +48,41 @@ def process_command():
     return parser.parse_args()
 
 
-if __name__ == "__main__":
-
-    args = process_command()
-
-    print("Models start voting")
-
+def ensemble_learning(candidate=None):
+    data_transforms = {
+        "test": transforms.Compose(
+            [
+                transforms.Resize(256),
+                transforms.CenterCrop(224),
+                transforms.ToTensor(),
+                transforms.Normalize(
+                    [0.485, 0.456, 0.406], [0.229, 0.224, 0.225]
+                ),
+            ]
+        ),
+    }
+    model_list = [
+        "resnet50",
+        "densenet201",
+        "resnext50_32x4d",
+        "resnext101_32x8d",
+        "inception_resnet_v2",
+        "efficientnet_b4",
+    ]
     test_path = "./data/testing_data/testing_data/"
     allFileList = os.listdir(test_path)
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 
+    if candidate == None:
+        print("No input model")
+        return
+
+    print("Models start voting")
+
     # Final predict
     predicts = []
-    for i in range(len(args.models)):
-        model_name = args.models[i]
+    for i in range(len(candidate)):
+        model_name = candidate[i]
         model_path = "./models/" + model_name
         for x in model_list:
             if model_name.find(x) == 0:
@@ -147,10 +149,10 @@ if __name__ == "__main__":
 
         model_ft.load_state_dict(torch.load(model_path))
         model_ft = model_ft.to(device)
+        predict = []
 
         for file in allFileList:
             if os.path.isfile(test_path + file):
-                predict = []
                 path = test_path + file
                 img = Image.open(path).convert("RGB")
                 img = data_transforms["test"](img)
@@ -161,7 +163,7 @@ if __name__ == "__main__":
                     outputs = model_ft(img)
                     _, preds = torch.max(outputs, 1)
                     predict.append(int(preds.cpu().numpy()))
-            predicts.append(predict)
+        predicts.append(predict)
 
     # obtain label conversion table
     with open("./data/training_labels.csv", newline="") as csvfile:
@@ -184,16 +186,26 @@ if __name__ == "__main__":
         field = ["id", "label"]
         writer = csv.DictWriter(csvFile, field)
         writer.writeheader()
-        for x in range(len(predicts[0])):  # 5000 testing image
+        entry = 0
+        for file in allFileList:
             result = []
-            for y in range(len(predicts)):  # Number of models
-                result.append(predicts[y][x])
-            final_predict = most_frequent(result)
-            writer.writerow(
-                {
-                    "id": file.split(".jpg")[0],
-                    "label": label_conversion[final_predict],
-                }
-            )
+            if os.path.isfile(test_path + file):
+                for y in range(len(predicts)):  # Number of models
+                    result.append(predicts[y][entry])
+                final_predict = most_frequent(result)
+                writer.writerow(
+                    {
+                        "id": file.split(".jpg")[0],
+                        "label": label_conversion[final_predict],
+                    }
+                )
+            entry = entry + 1
 
     print("Done!")
+
+
+if __name__ == "__main__":
+
+    args = process_command()
+
+    ensemble_learning(args.models)
