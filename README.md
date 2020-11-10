@@ -78,7 +78,7 @@ Required arguments:
 OR
 
 ```
-from model import train_test_model
+from ensemble import ensemble_learning
 
 models = ["resnet50_1_model","resnet50_2_model"]
 ensemble_learning(models)
