@@ -7,7 +7,7 @@ The project is training an accurate car brands classification using deep learnin
 We training and testing with Python 3.6, pytorch 1.4 and **Need** to reference [timm](https://github.com/rwightman/pytorch-image-models), [AutoAugment](https://github.com/DeepVoltaire/AutoAugment).
 
 ### Traning and Testing model
-First choose one of the following models:
+First, choose one of the following models:
 * resnet50
 * densenet201
 * inception_resnet_v2
@@ -15,7 +15,7 @@ First choose one of the following models:
 * resnext101_32x8d
 * efficientnet_b4
 
-We supply two ways to use our program(training and testing)
+Second, we supply two ways to use our program to training and testing model
 
 
 Example:
