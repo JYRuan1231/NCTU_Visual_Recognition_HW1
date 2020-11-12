@@ -101,7 +101,7 @@ When the program was finished, we will get a csv file `/result/`.
 | Efficienct_net_b4             | 0.93680                         |
 | Top 3 model (ensmble learning)| 0.94240                         |
 | Top 5 model (ensmble learning)| 0.94640                         |
-| Top 7 model (ensmble learning)| 0.94900 (best)                  |
+| Top 7 model (ensmble learning)| 0.94900                         |
 
 
 
