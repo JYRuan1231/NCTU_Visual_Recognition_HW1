@@ -72,7 +72,7 @@ python ensemble.py -m resnet50_1_model -m resnet50_2_model
 
 
 Required arguments:
---model -m 				Choose model:resnet50, densenet201, inception_resnet_v2, resnext50_32x4d, resnext101_32x8d, efficientnet_b4
+--model -m 		Select the model you want to use ensemble learning in folder `/models/`.
 ```
 
 OR
